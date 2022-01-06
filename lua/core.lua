@@ -22,16 +22,21 @@ lsp_installer.settings({
     }
 })
 
+local languages_installer = {"gopls", "pyright"}
+
 -- this is for lsp installer plugin
-local server_available, requested_server = lsp_installer_servers.get_server("gopls")
-if server_available then
-    requested_server:on_ready(function ()
-        local opts = {}
-        requested_server:setup(opts)
-    end)
-    if not requested_server:is_installed() then
-        -- Queue the server to be installed
-        requested_server:install()
+
+for _, language in ipairs(languages_installer) do
+    local server_available, requested_server = lsp_installer_servers.get_server(language)
+    if server_available then
+        requested_server:on_ready(function ()
+            local opts = {}
+            requested_server:setup(opts)
+        end)
+        if not requested_server:is_installed() then
+            -- Queue the server to be installed
+            requested_server:install()
+        end
     end
 end
 
@@ -85,6 +90,8 @@ local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 cmp.event:on( 'confirm_done', cmp_autopairs.on_confirm_done({  map_char = { tex = '' } }))
 
 require'lspconfig'.gopls.setup{}
+
+require'lspconfig'.pyright.setup{}
 
 vim.g.coc_global_extensions = {
     'coc-vimlsp',
@@ -148,6 +155,20 @@ return require('packer').startup(function()
         'AckslD/nvim-whichkey-setup.lua',
         requires = {'liuchengxu/vim-which-key'},
     }
+
+    use {
+        'rmagatti/auto-session',
+        config = function()
+            require('auto-session').setup {
+                log_level = 'info',
+                auto_session_suppress_dirs = {'~/', '~/Projects'}
+            }
+        end
+    }
+
+    use "projekt0n/github-nvim-theme"
+
+    use 'Asheq/close-buffers.vim'
 
     if packer_bootstrap then
         require('packer').sync()
