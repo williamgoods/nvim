@@ -10,7 +10,7 @@ require('lualine').setup()
 
 -- this is for lspconfig plugin
 local lsp_installer = require("nvim-lsp-installer")
-local lsp_installer_servers = require'nvim-lsp-installer.servers'
+-- local lsp_installer_servers = require'nvim-lsp-installer.servers'
 
 lsp_installer.settings({
     ui = {
@@ -22,23 +22,23 @@ lsp_installer.settings({
     }
 })
 
-local languages_installer = {"gopls", "pyright"}
+-- local languages_installer = {"gopls", "pyright"}
 
 -- this is for lsp installer plugin
 
-for _, language in ipairs(languages_installer) do
-    local server_available, requested_server = lsp_installer_servers.get_server(language)
-    if server_available then
-        requested_server:on_ready(function ()
-            local opts = {}
-            requested_server:setup(opts)
-        end)
-        if not requested_server:is_installed() then
-            -- Queue the server to be installed
-            requested_server:install()
-        end
-    end
-end
+-- for _, language in ipairs(languages_installer) do
+--    local server_available, requested_server = lsp_installer_servers.get_server(language)
+--    if server_available then
+--        requested_server:on_ready(function ()
+--            local opts = {}
+--            requested_server:setup(opts)
+--        end)
+--        if not requested_server:is_installed() then
+--            -- Queue the server to be installed
+--            requested_server:install()
+--        end
+--    end
+-- end
 
 -- Setup nvim-cmp
 local cmp = require'cmp'
@@ -94,6 +94,7 @@ require'lspconfig'.gopls.setup{}
 require'lspconfig'.pyright.setup{}
 
 vim.g.coc_global_extensions = {
+    'coc-powershell',
     'coc-vimlsp',
 	'coc-sumneko-lua'
 }
@@ -169,6 +170,10 @@ return require('packer').startup(function()
     use "projekt0n/github-nvim-theme"
 
     use 'Asheq/close-buffers.vim'
+
+    use 'preservim/nerdcommenter'
+
+    use 'haishanh/night-owl.vim'
 
     if packer_bootstrap then
         require('packer').sync()

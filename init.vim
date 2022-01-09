@@ -29,12 +29,19 @@ lua << EOF
     }
 EOF
 
-" colorscheme github_dark
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+
+syntax enable
+colorscheme night-owl
+let g:lightline = { 'colorscheme': 'nightowl' }
 
 set timeoutlen=200
 
 let g:mapleader = "\<Space>"
 let g:maplocalleader = ','
+
+nnoremap j jzz
+nnoremap k kzz
 
 nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
 nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
@@ -90,6 +97,9 @@ nnoremap <A-Right> :BufferNext<CR>
 nnoremap <A-j> :BufferPrevious<CR>                                                                            
 nnoremap <A-k> :BufferNext<CR>
 
+inoremap <C-n> <ESC>o
+inoremap <C-p> <ESC>ko
+
 tnoremap <Esc> <C-\><C-n>
 
 nnoremap <silent> <A-1> :BufferGoto 1<CR>
@@ -110,11 +120,13 @@ set mouse=a
 
 set hidden
 
-let &shell = 'pwsh'
-let &shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command '
-let &shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
-let &shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
-set shellquote= shellxquote=
+let &shell = 'nu'
+
+" let &shell = 'pwsh'
+" let &shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command '
+" let &shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+" let &shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+" set shellquote= shellxquote=
 
 func Exec(command)
     redir =>output
@@ -144,7 +156,11 @@ function CloseAllTerm()
 endfunction
 
 function OpenTermOnStart()
-    silent exec "tabnew +term"
+    let argumentlength = len(v:argv)
+
+    if argumentlength == 1
+        silent exec "tabnew +term"
+    endif
 
     call luaeval('require("auto-session").AutoRestoreSession')() 
 
