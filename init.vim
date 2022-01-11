@@ -1,7 +1,11 @@
 let $PATH = "C:\Users\m1735\scoop\apps\git\current\bin;" . $PATH
 
+let uname = substitute(system('uname'), '\n', '', '')
+
 lua << EOF
     require("core")
+
+    require("plugin")
 
     -- this is for telescope plugin
 
@@ -29,6 +33,16 @@ lua << EOF
     }
 EOF
 
+" Trigger configuration. You need to change this to something other than <tab> if you use one of the following:
+" - https://github.com/Valloric/YouCompleteMe
+" - https://github.com/nvim-lua/completion-nvim
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
+
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 
 syntax enable
@@ -36,6 +50,8 @@ colorscheme night-owl
 let g:lightline = { 'colorscheme': 'nightowl' }
 
 set timeoutlen=200
+
+set cmdheight=1
 
 let g:mapleader = "\<Space>"
 let g:maplocalleader = ','
@@ -68,9 +84,6 @@ let g:which_key_map.q = {
     \"name": "quit neovim",
     \"q" : ["quit", "quit neovim"]
             \}
-
-" Set <LEADER> as <SPACE>, ; as :
-" let mapleader=" "
 
 inoremap jj <esc>
 
@@ -120,13 +133,18 @@ set mouse=a
 
 set hidden
 
-let &shell = 'nu'
+if uname == 'Linux' || uname == 'Darwin'
+    " do linux/mac command
+else " windows
+    " do windows command
+    let &shell = 'nu'
 
-" let &shell = 'pwsh'
-" let &shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command '
-" let &shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
-" let &shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
-" set shellquote= shellxquote=
+    let &shell = 'pwsh'
+    let &shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command '
+    let &shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+    let &shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+    set shellquote= shellxquote=
+endif
 
 func Exec(command)
     redir =>output
