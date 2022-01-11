@@ -139,11 +139,11 @@ else " windows
     " do windows command
     let &shell = 'nu'
 
-    let &shell = 'pwsh'
-    let &shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command '
-    let &shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
-    let &shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
-    set shellquote= shellxquote=
+    " let &shell = 'pwsh'
+    " let &shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command '
+    " let &shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+    " let &shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+    " set shellquote= shellxquote=
 endif
 
 func Exec(command)
