@@ -156,12 +156,12 @@ endfunc
 let LuaAutoSaveSession = luaeval('require("auto-session").AutoSaveSession')
 let LuaAutoRestoreSession = luaeval('require("auto-session").autorestoresession')
 
-function CloseAllTerm()
+function CloseTabs(state) 
     let str = Exec("ls")
     let buflist = split(str, "\n")
 
     for item in buflist
-        let idx = stridx(item, "term")
+        let idx = stridx(item, a:state)
 
         if idx != -1 
             let bufid = str2nr(item[0:3])
@@ -169,6 +169,10 @@ function CloseAllTerm()
             echo "delete buffer " .. bufid
         endif
     endfor
+endfunction
+
+function CloseAllTerm()
+    call CloseTabs("term")
 
     call LuaAutoSaveSession() 
 endfunction
@@ -182,20 +186,10 @@ function OpenTermOnStart()
 
     call luaeval('require("auto-session").AutoRestoreSession')() 
 
-    let str = Exec("ls")
-    let buflist = split(str, "\n")
-
-    for item in buflist
-        let idx = stridx(item, "[No Name]")
-
-        if idx != -1 
-            let bufid = str2nr(item[0:3])
-            silent exec "bdelete! " .. bufid    
-            echo "delete buffer " .. bufid
-        endif
-    endfor
+    call CloseTabs("No Name")
 endfunction
 
 autocmd VimEnter * nested call OpenTermOnStart()
 autocmd VimLeave * nested call CloseAllTerm()
+
 
