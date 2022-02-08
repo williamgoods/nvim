@@ -1,5 +1,3 @@
-let $PATH = "C:\Users\m1735\scoop\apps\git\current\bin;" . $PATH
-
 let uname = substitute(system('uname'), '\n', '', '')
 
 lua << EOF
@@ -138,6 +136,7 @@ if uname == 'Linux' || uname == 'Darwin'
 else " windows
     " do windows command
     let &shell = 'nu'
+    let $PATH = "C:\Users\m1735\scoop\apps\git\current\bin;" . $PATH
 
     " let &shell = 'pwsh'
     " let &shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command '
