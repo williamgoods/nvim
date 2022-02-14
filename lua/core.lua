@@ -10,9 +10,9 @@ if fn.empty(fn.glob(install_path)) > 0 then
 end
 
 return require('packer').startup(function()
-    use {
-	    'neoclide/coc.nvim', branch = 'release'
-    }
+    --use {
+		--'neoclide/coc.nvim', branch = 'release'
+    --}
 
     use {
         'dense-analysis/ale', branch = 'master'
