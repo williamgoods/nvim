@@ -66,7 +66,7 @@ lsp_installer.settings({
     }
 })
 
-local languages_installer = {"sumneko_lua", "gopls", "pyright", "clangd"}
+local languages_installer = {"sumneko_lua", "gopls", "pyright", "clangd", "cmake"}
 
 for _, language in ipairs(languages_installer) do
     local server_available, requested_server = lsp_installer_servers.get_server(language)
@@ -90,8 +90,9 @@ require'lspconfig'.gopls.setup{
 
 require'lspconfig'.pyright.setup{}
 
-
 require'lspconfig'.clangd.setup{}
+
+require'lspconfig'.cmake.setup{}
 
 require'lspconfig'.sumneko_lua.setup {
     cmd = { lsp_installer_path .. "sumneko_lua/extension/server/bin/lua-language-server" }
