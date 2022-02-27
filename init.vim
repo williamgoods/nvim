@@ -71,6 +71,7 @@ let g:which_key_map.f = {
 
 let g:which_key_map.b = {
         \"name" : "+buffer close",
+        \"b" : [":call CloseTabs(\"[No Name]\")", "close empty tab"],
         \}
 
 let g:which_key_map.s = {
@@ -88,6 +89,8 @@ inoremap jj <esc>
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+
+nnoremap <leader>bb <cmd>:call CloseTabs("[No Name]")<cr>
 
 nnoremap Q <cmd>:bdelete!<cr>
 
@@ -152,8 +155,8 @@ func Exec(command)
     return output
 endfunc
 
-let LuaAutoSaveSession = luaeval('require("auto-session").AutoSaveSession')
-let LuaAutoRestoreSession = luaeval('require("auto-session").autorestoresession')
+"let LuaAutoSaveSession = luaeval('require("auto-session").AutoSaveSession')
+"let LuaAutoRestoreSession = luaeval('require("auto-session").autorestoresession')
 
 function CloseTabs(state) 
     let str = Exec("ls")
@@ -172,23 +175,27 @@ endfunction
 
 function CloseAllTerm()
     call CloseTabs("term")
+    call CloseTabs("No Name")
 
-    call LuaAutoSaveSession() 
+    "call LuaAutoSaveSession() 
+    "exec "SessionManager! save_current_session"
 endfunction
 
 function OpenTermOnStart()
-    let argumentlength = len(v:argv)
+    "let argumentlength = len(v:argv)
 
-    if argumentlength == 1
-        silent exec "tabnew +term"
-    endif
+    "if argumentlength == 1
+        "silent exec "tabnew +term"
+    "endif
 
-    call luaeval('require("auto-session").AutoRestoreSession')() 
+    "call luaeval('require("auto-session").AutoRestoreSession')() 
 
     call CloseTabs("No Name")
+
+    "exec "SessionManager! load_last_session"
 endfunction
+
+echo "this is neovim world"
 
 autocmd VimEnter * nested call OpenTermOnStart()
 autocmd VimLeave * nested call CloseAllTerm()
-
-

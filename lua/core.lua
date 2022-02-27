@@ -59,15 +59,16 @@ return require('packer').startup(function()
         requires = {'liuchengxu/vim-which-key'},
     }
 
-    use {
-        'rmagatti/auto-session',
-        config = function()
-            require('auto-session').setup {
-                log_level = 'info',
-                auto_session_suppress_dirs = {'~/', '~/Projects'}
-            }
-        end
-    }
+    --use {
+        --'rmagatti/auto-session',
+        --config = function()
+            --require('auto-session').setup {
+                --log_level = 'info',
+                --auto_session_suppress_dirs = {'~/', '~/Projects'}
+            --}
+        --end
+    --}
+    use { 'Shatur/neovim-session-manager' }
 
     use "projekt0n/github-nvim-theme"
 
